@@ -66,6 +66,7 @@ Supporting pieces:
 
 ## 4. Stretch (P1, only if P0 is stable by the freeze)
 
+- **Trip cost estimate.** "How much will three days cost me?" Sums fares, entry costs and typical meal prices from the curated data and the transport table. No new data, one tool. Igor's idea (12 Oct), good fit.
 - **Three-day planner.** "I have three days, I like nature and food, no malls." Day-by-day plan from the curated data. Cheap once the data exists, high pitch value.
 - **eSIM.** "I need internet for 10 days." Quote and "activate". Simulated; a real partner API (Airalo partner programme or similar) needs a commercial agreement. Verify before promising.
 - **Attraction tickets.** Museum of the Future, Global Village, desert safari. Simulated checkout with a QR so it looks real.
@@ -229,6 +230,8 @@ Workshops and mentorship (Oct to Dec) are also where the jury's circle is. Igor 
 - (12 oct) history and facts section: short history of the UAE, how many emirates, what's good where
 - (12 oct) per-emirate pages with hotels and headline attractions (e.g. Jebel Jais zipline)
 - (12 oct) parking
+- (12 oct) live feeds: exchange rates, fuel prices, taxi fare estimates. cheap, not scored, after the freeze
+- (12 oct) flight booking as the start of the journey (already listed above, repeated)
 
 ---
 
