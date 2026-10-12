@@ -225,6 +225,10 @@ Workshops and mentorship (Oct to Dec) are also where the jury's circle is. Igor 
 - international expansion
 - locals investing / monetisation (goes in the deck's business model slide instead)
 - two-way interpreter mode for the person you're talking to
+- (12 oct) whole-country coverage: Abu Dhabi, Ras Al Khaimah, all seven emirates, same engine with more curated places
+- (12 oct) history and facts section: short history of the UAE, how many emirates, what's good where
+- (12 oct) per-emirate pages with hotels and headline attractions (e.g. Jebel Jais zipline)
+- (12 oct) parking
 
 ---
 
