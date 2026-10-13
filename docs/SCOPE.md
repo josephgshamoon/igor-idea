@@ -4,7 +4,7 @@
 
 **One line:** a voice-first AI agent for visitors to Dubai. You give it a goal in your own language and it plans, books, translates, navigates and reminds, end to end, so a tourist never needs the "gazillion apps".
 
-This scopes what we build for the **Create AI Agents Championship** run by the Dubai Chamber of Digital Economy, announced by Sheikh Hamdan on 7 October 2026. Igor's voice notes came two days later; "cups" in the transcript is "Create Apps", the predecessor competition. Section 10 is the parking lot for everything he adds later.
+This scopes what we build for the **Create AI Agents Championship** run by the Dubai Chamber of Digital Economy, announced by Sheikh Hamdan on 7 October 2026. Igor's voice notes came two days later; "cups" in the transcript is "Create Apps", the predecessor competition. Section 11 is the parking lot for everything he adds later. Section 14 maps his 13 October brief (a 24-area global travel app) against this scope.
 
 ---
 
@@ -63,6 +63,7 @@ Supporting pieces:
 - **Itinerary and reminders.** Every booking lands in a trip timeline, reminders fire as push notifications. Real.
 - **Hidden gems.** 30 to 50 places curated by Igor: photo, GPS, entry cost, drive time from Dubai, best time, why it's special. This is the moat and the "measurable impact" story: places no existing app surfaces. Real.
 - **Languages.** Serbian, Russian, Hindi, Mandarin, Arabic, English. The model handles translation natively; we need speech-to-text and text-to-speech coverage for each (risk R3).
+- **Destination pack and delete-my-data.** Static Dubai facts (emergency numbers, local rules, currency, official links) loaded into the prompt from data, and a one-tap delete of the trip and conversation. Both from the 13 Oct brief (section 14). Small, real.
 
 ## 4. Stretch (P1, only if P0 is stable by the freeze)
 
@@ -85,7 +86,7 @@ The grand final needs a fully working agent live on stage. Between semis and fin
 - Real payments, wallets, card data.
 - Real ride-hail, airline, hotel or attraction APIs (none are public; section 7).
 - Accounts, social, reviews, app store release. We demo from a dev build.
-- Anything outside the UAE. "International later" is one slide.
+- Anything outside the UAE. "International later" is one slide. Section 14 says what "leave space for global" costs now: three data-shape choices, no code.
 
 ---
 
@@ -104,7 +105,8 @@ backend (Node, TypeScript, single service)
   - agent loop: Anthropic SDK tool runner, claude-opus-5-5,
     adaptive thinking, effort "low" for chat turns, "medium" with tools
   - tools (table below)
-  - Postgres: places, trips, bookings, reminders
+  - Postgres: places, trips, bookings, reminders, destination packs
+    (every curated row keyed by country/city; Dubai is the only value until May)
   - WhatsApp Business Cloud API client
   - demo-mode flag
         |
@@ -140,7 +142,7 @@ The rules say the agent must protect personal and organisational data and preven
 
 - The phone holds no API keys. All provider keys live in the backend's secret store.
 - We store the minimum: a trip id, itinerary items, the conversation for the session. No passport, no card, no home address. Name and phone number only if the user gives them for a reservation, and the reservation message is shown to the user before it is sent.
-- Conversation data deleted at trip end by default.
+- Conversation data deleted at trip end by default, and a "delete my data" button in the app that does it now. One query, and the rehearsed answer to "how do I get out".
 - Prompt injection: tool outputs (place data, WhatsApp replies, anything from the web) are data, never instructions. The system prompt says so and the agent never sends a message or booking without the user confirming in the UI. This also answers "what stops it booking the wrong thing".
 - Data at rest in a UAE region for the finals build: AWS me-central-1 (UAE) or Azure UAE North. Assumption, not verified: whether Claude models are served in a UAE region on Bedrock. If not, inference leaves the region and we say so plainly; the stored data stays. Check before the semi-final pitch, judges may ask. For the January prototype, any region is fine.
 - UAE Personal Data Protection Law (Federal Decree-Law 45 of 2021) is the reference to cite. One slide, not a legal review.
@@ -232,6 +234,7 @@ Workshops and mentorship (Oct to Dec) are also where the jury's circle is. Igor 
 - (12 oct) parking
 - (12 oct) live feeds: exchange rates, fuel prices, taxi fare estimates. cheap, not scored, after the freeze
 - (12 oct) flight booking as the start of the journey (already listed above, repeated)
+- (13 oct) from the 24-area brief, see section 14: inter-emirate routes and Etihad Rail, hotels, flight status and airport navigation, events feed, in-app visual map, shopping and local services, booking changes and cancellations, email to providers, calendar sync, traffic and weather alerts, loyalty programmes, family and group trips, persistent cross-trip profile
 
 ---
 
@@ -243,6 +246,7 @@ Workshops and mentorship (Oct to Dec) are also where the jury's circle is. Igor 
 4. Which second language if Serbian speech is weak: Russian?
 5. Who in your network runs a restaurant, safari operator or hotel desk and would give us a dedicated WhatsApp line or booking endpoint for the finals?
 6. Can you attend the three live workshops and the November to December mentorship sessions?
+7. Section 14 is my reading of your 24-area brief: Dubai only until May, global as the roadmap slide, destination as data. Agree? Anything you want moved from parking lot into the prototype needs something of equal size moved out.
 
 ---
 
@@ -256,3 +260,51 @@ Workshops and mentorship (Oct to Dec) are also where the jury's circle is. Igor 
 - WhatsApp is the one real outbound integration until the finals.
 - User confirms every outbound message and booking in the UI. The agent never sends on its own.
 - Demo mode and backup video are phase 1 deliverables.
+- (13 Oct) Dubai is the product until May. Global is one roadmap slide. A destination is data, not code: `country`/`city` keys on every curated row, a per-destination prompt pack, no destination names in code. No other generalisation before 8 January.
+
+---
+
+## 14. Igor's 13 Oct brief: the 24-area global app, mapped
+
+Source: `docs/igor-brief-2026-10-13.md` (voice note transcript plus the Word document). Igor's ask in one line: "open in Dubai for sure, but leave a space to create it globally". The document is a 24-area spec for a worldwide travel super app.
+
+**Decision: Dubai is the product until May, global is the roadmap slide, and a destination is data, not code.** The championship scores a working agent, a customer need and measurable impact, all judged in Dubai. Nothing in the 24 areas changes sections 3 or 4. What does change is three cheap architecture choices made now so going global later is adding data rather than rewriting:
+
+- Every curated row (places, transport table, fares, emergency numbers, local rules, currency) carries a `country` and `city` key. Dubai is the only value until May.
+- The system prompt is assembled from a per-destination pack (facts, rules, numbers, currency, languages) plus a destination-neutral core. Adding Abu Dhabi, or Belgrade, is a new pack.
+- No destination or "Dubai" in package, module or table names. Also covers R5.
+
+That costs a few hours in phase 1 and nothing later. The strongest counter-argument is R6: "designed for global" is how two-person projects grow provider abstractions and plugin systems and miss the freeze. The rule is that generalisation is only ever a data column, never a new layer. If a change needs a new abstraction to support a second country, it waits until after 8 January.
+
+Igor's distribution point is good and goes in the deck: Dubai's visitors are from everywhere, so a visitor who used the agent well in Dubai is the launch channel for their home market. Business model slide, one line.
+
+### The 24 areas against the prototype
+
+| # | Igor's area | Where it lands | Note |
+|---|-------------|----------------|------|
+| 1 | AI personal assistant | **P0** | This is the agent. |
+| 2 | Global travel guide and trip planner | **P1** (three-day planner, Dubai) | Global guide is the roadmap. |
+| 3 | Public transport, taxi, route planner | **P0** (flow 1) | Transport table and simulated ride. Inter-emirate routes and Etihad Rail: parking lot. |
+| 4 | Flights, airports, international travel | parking lot | No public booking APIs; flight status feeds possible after the freeze. |
+| 5 | Hotels and accommodation | parking lot | Section 6: no hotel APIs for the championship. Deep link to the hotel's site at most. |
+| 6 | Restaurants, food, reservations | **P0** (flow 3) | The one real booking path, over WhatsApp. |
+| 7 | Attractions, tours, activities, events | **P0** curated hidden gems, **P1** simulated tickets | Events feed: parking lot. |
+| 8 | Maps and local navigation | **P0** conversational, deep link to Google or Apple Maps | In-app visual map: parking lot. |
+| 9 | Real-time translation and communication | **P0** (flow 2 camera, voice in six languages) | Two-way live interpreter mode: parking lot. |
+| 10 | Local culture, laws, visas, travel requirements | **P1**, cheap | Static content in the destination pack with links to official sources. Half a day. No legal advice tone. |
+| 11 | Weather, currency, local information | parking lot (12 Oct live feeds) | Currency and weather are one free API each, after the freeze. |
+| 12 | Shopping, deals, local services | parking lot | Pharmacies could ride on the curated data if Igor adds them. |
+| 13 | Emergency, safety, healthcare | **P1**, cheap | UAE emergency numbers and nearest hospital as a static card in the destination pack. One afternoon, and a good answer to a safety question from a judge. |
+| 14 | Itinerary and document storage | **P0** itinerary; document storage **declined** | Storing passports and boarding passes contradicts the minimum-data stance in section 7, which is scored. Say so in the deck as a choice. |
+| 15 | Booking management and AI actions | **P0** partial | "Approval before consequential actions" is already a decision. Changes and cancellations: parking lot. |
+| 16 | Email, messaging, provider communication | **P0** WhatsApp | Email: parking lot. |
+| 17 | Reminders, calendar, proactive assistance | **P0** reminders | Calendar sync and traffic or weather-driven alerts: parking lot. |
+| 18 | Personalised recommendations, daily planning | **P0** via conversation and curated data, **P1** planner | |
+| 19 | Budget, expenses, payments, rewards | **P1** trip cost estimate | Payments and wallets are out (section 6). Loyalty: parking lot. |
+| 20 | Family, group, business travel | parking lot | "Party size" already exists on reservations; that is all for now. |
+| 21 | User profile, memory, preferences | **P0** minimal (language, trip) | A persistent cross-trip profile is a data protection trade-off; roadmap. |
+| 22 | Multilingual app and voice interface | **P0** | Serbian, Russian, Hindi, Mandarin, Arabic, English. UI chrome in English for the demo. |
+| 23 | Privacy, security, permissions | **P0** | Section 7. Add a "delete my data" button to the P0 list; it is one query and judges ask. |
+| 24 | Global integrations and country expansion | roadmap slide | The three architecture choices above are the whole commitment until May. |
+
+Net new work from the brief: the destination pack (10, 13), the delete-my-data button (23), and the `country`/`city` keys. Roughly one to two days inside phase 1. Everything else was already in, or is in the parking lot.
