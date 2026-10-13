@@ -240,7 +240,7 @@ Workshops and mentorship (Oct to Dec) are also where the jury's circle is. Igor 
 
 ## 12. Open questions for Igor
 
-1. Register this week on dubaichamberdigital.com/en/create-ai-agents. Both of us, individually. Done?
+1. Register this week on dubaichamberdigital.com/en/create-ai-agents. Both of us, individually. Igor: done, 13 Oct. Joseph: pending.
 2. Agree in writing on ownership and split, given the prize is a grant of AED 550,000 per category (AED 1.55 million ceiling), not 2.5 million. Which of us, or which entity, receives it?
 3. First 30 places into the spreadsheet (name, GPS, photo, cost, drive time, why special) by 1 November?
 4. Which second language if Serbian speech is weak: Russian?
